@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class JwtTokenProvider {
 	
-	 private static final String JWT_SECRET = "secretKey";
+	 private static final String JWT_SECRET = "mySecretKey!@";
 	 
 	 private static final int JWT_EXPIRATION_MS = 604800000;
 	 
@@ -45,8 +45,10 @@ public class JwtTokenProvider {
 	 public static String generateToken(Authentication authentication) {
 		 Date now = new Date();
 		 Date expiryDate = new Date(now.getTime()+JWT_EXPIRATION_MS);
-		 String jwt_secret =  Base64.getEncoder().encodeToString(JWT_SECRET.getBytes());
-		
+		 String jwt_secret =  JWT_SECRET;
+		 //String jwt_secret =  Base64.getEncoder().encodeToString(JWT_SECRET.getBytes());
+		//암호화 하라고 했는데... validateToken함수에서 인증할때 또 암호화 해야되서 일단 보류
+		 
 		 String token = Jwts.builder()
 				 .setSubject((String) authentication.getPrincipal())
 				 .setIssuedAt(new Date())

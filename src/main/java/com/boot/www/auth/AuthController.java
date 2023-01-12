@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.boot.www.auth.bean.Result;
 import com.boot.www.common.CommonCode;
 import com.boot.www.token.JwtTokenProvider;
 import com.boot.www.token.UserAuthentication;
@@ -40,6 +41,9 @@ public class AuthController {
 	@Autowired
 	private Gson gson;
 	
+	@Autowired 
+	private AuthService authService;
+	
 
 	@RequestMapping(value = "/loginView", method = {RequestMethod.GET}) 
 	public ModelAndView loginView(HttpServletRequest req, HttpServletResponse res){
@@ -61,10 +65,9 @@ public class AuthController {
 	}
 	*/
 	
-	
 		
 	@RequestMapping(value = "/login", method = {RequestMethod.POST}, produces = "application/json") 
-	public ResponseEntity<String> getStatsChartData(@RequestParam Map<String, Object> param,HttpServletRequest req, HttpServletResponse res){
+	public ResponseEntity<String> login(@RequestParam Map<String, Object> param,HttpServletRequest req, HttpServletResponse res){
 		Result result = new Result();
 		try {
 			String userId =  (String)param.get("userId");
@@ -72,13 +75,13 @@ public class AuthController {
 			log.debug("userId : ",userId);
 			log.debug("userPwd : ",userPwd);
 			
-			if(userId.equals("admin")) {
-				Authentication authentication = new UserAuthentication(userId,null,null);
+			Map<String, Object> user = authService.getUser(param);
+			
+			if(user != null) {
+				Authentication authentication = new UserAuthentication(user.get("userId"),null,null);
 				String token = JwtTokenProvider.generateToken(authentication);
 				
-				//DB에 저장하는 로직 추가 필요?
-				
-				
+				//토큰을 DB에 저장하는 로직 추가 필요?
 				result.setData("token",token);
 			}else {
 				result = new Result(CommonCode.ERROR_OTHER);	

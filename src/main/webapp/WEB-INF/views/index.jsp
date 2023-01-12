@@ -7,6 +7,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-dfdfdfd
 </body>
+<script type="text/javascript">
+	location.href="/main"
+	
+</script>
 </html>

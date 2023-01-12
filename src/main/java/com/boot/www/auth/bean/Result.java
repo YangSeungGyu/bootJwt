@@ -1,4 +1,4 @@
-package com.boot.www.auth;
+package com.boot.www.auth.bean;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -69,6 +69,8 @@
 					let data = result.data;
 					let token = data.token;
 					alert(token);
+					
+					location.href="/main?token="+token;
 				}else {
 					alert(result.resultCode +" / " +result.resultMsg);
 				} 

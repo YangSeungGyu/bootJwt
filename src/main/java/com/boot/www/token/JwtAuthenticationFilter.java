@@ -61,7 +61,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		
 		if(!StringUtils.isEmpty(request) && bearerToken.startsWith("Bearer")) {
 			log.info("Bearer exist");
-			return bearerToken.substring("Bearer".length());
+			return bearerToken.substring("Bearer ".length());
 		}
 		return null;
 	}
