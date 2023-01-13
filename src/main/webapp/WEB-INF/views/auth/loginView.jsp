@@ -11,6 +11,8 @@
 
 <script type="text/javascript" src="${contextPath}/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="${contextPath}/js/jquery.form.js"></script>
+<script type="text/javascript" src="${contextPath}/js/sha256.min.js"></script>
+
 
 <style>
 	.loginDiv {
@@ -57,7 +59,31 @@
 </body>
 
 <script type="text/javascript">
+/*
+	function sha256(str) {
+		var buffer = new TextEncoder("utf-8").encode(str);
+		return crypto.subtle.digest("SHA-256", buffer).then(function (hash) {
+			//return hex(hash);
+			return hex(hash);
+		});
+		
+	}
+	*/
+	function sha256(str) {
+		var APIKey = "mySecretKey";
+		var hash = CryptoJS.HmacSHA256(str,APIKey);
+		 var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
+		return hashInBase64;
+	}
+
 	function login(){
+		loginFrm.userPwd.value = sha256(loginFrm.userPwd.value);
+		alert(loginFrm.userPwd.value);
+		
+		if(false){
+			return false;
+		}
+		
 	
 		$('#loginFrm').ajaxSubmit({
 			url :'/auth/login',

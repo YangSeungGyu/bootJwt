@@ -8,6 +8,8 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.boot.www.util.Sha256;
+
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -18,10 +20,19 @@ public class AuthService {
 
 	
 	
-	
+	//=====================샘플 코드=====================
 	public Map<String,Object> getUser(Map<String, Object> param){
 		Map<String,Object> result = new HashMap<String,Object>();
-		return getUserFromDb(param);
+		 Map<String,Object> userById = getUserFromDb(param);
+		
+		 String unConfirmPwd = Sha256.encoder((String)userById.get("userPwd"));
+		 
+		 if(unConfirmPwd.equals((String)param.get("userPwd"))) {
+			 log.debug("==============================sueccess=========");
+		 }else {
+			 userById = null;
+		 }
+		return userById;
 		
 	}
 	
@@ -50,13 +61,11 @@ public class AuthService {
 		Map<String,Object> getUser = null;
 		
 		for(Map<String, Object> dbUser : userList){
-			if(((String)dbUser.get("userId")).equals(((String)param.get("userId")))
-					&& ((String)dbUser.get("userPwd")).equals(((String)param.get("userPwd")))){
+			if(((String)dbUser.get("userId")).equals(((String)param.get("userId")))){
 				getUser = dbUser;
 			}
 		};
 		return getUser;
-		
 	}
-	
+	//=====================샘플 코드=====================
 }
